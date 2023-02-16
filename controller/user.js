@@ -13,14 +13,14 @@ async function login(username, password) {
 }
 async function userAll(currentPage, pageSize, userId, userName) {
     let obj = {};
+
     if (userId) {
         obj.userId = userId
     }
+    //模糊查询
     if (userName) {
-        obj.username = { $regex: `/${userName}/i` }
-    }
-    console.log(obj);
-    //分页查询
+        obj.username = { $regex: userName }
+    }    //分页查询
     const userAll = await User.find(obj, { userpassword: 0 }).limit(pageSize).skip((currentPage - 1) * pageSize);
     if (userAll) {
         return userAll;

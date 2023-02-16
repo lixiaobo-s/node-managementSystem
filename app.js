@@ -7,6 +7,7 @@ const onerror = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
 // const logger = require('koa-logger')
 const users = require('./routes/users')
+const menus = require("./routes/menu")
 const jwtKoa = require("koa-jwt")
 const { tokenErr } = require("./utils/util");
 // error handler
@@ -58,8 +59,8 @@ app.use(
     path: [/^\/users\/login/]   //登录接口不需要验证
   })
 )
-
 app.use(users.routes(), users.allowedMethods())
+app.use(menus.routes(), menus.allowedMethods())
 
 // error-handling
 app.on('error', (err, ctx) => {
