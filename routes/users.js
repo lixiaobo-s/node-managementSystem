@@ -1,6 +1,6 @@
 const router = require('koa-router')()
 const util = require("../utils/util")
-const { login, userAll, updatedById, deleteById } = require("../controller/user")
+const { login, userAll, updatedById, deleteById, deleteUserMany, addUser, quryuser } = require("../controller/user")
 const { getStates } = require("../controller/role")
 const jwt = require('jsonwebToken')
 router.prefix('/users')
@@ -42,6 +42,18 @@ router.get("/getRole", async (ctx) => {
   return ctx.body = util.nsuccess({ data: role })
 })
 
+//增加
+router.put("/addUser", async (ctx) => {
+  const data = ctx.request.body;
+  //查询用户是否存在
+  let is = await quryuser({ username: data.username });
+  if (is.length == 0) {
+    let res = await addUser(data);
+    ctx.body = util.success({ data: { username: res.username }, msg: '注册成功！' });
+    return;
+  }
+  ctx.body = util.fail({ data: '', msg: '用户名已经被注册！' });
+})
 router.put('/updataUser', async (ctx) => {
   const res = await updatedById(ctx.request.body);
   if (res.matchedCount != 0) {
@@ -55,8 +67,17 @@ router.delete('/deleteUser', async (ctx) => {
   const res = await deleteById(userid);
   ctx.body = util.success({ data: '', msg: '删除成功！' })
 })
+//批量删除
+router.put("/deleteUserMany", async (ctx) => {
+  let res = await deleteUserMany(ctx.request.body);
+  console.log(ctx.request.body);
+  console.log(res);
+  if (res.deletedCount > 0) {
+    ctx.body = util.success({ data: '', msg: '删除成功！' })
+  } else {
+    ctx.body = util.fail({ data: '', msg: '删除失败！' })
+  }
 
-// 查询指定的数据
-// router
+})
 
 module.exports = router

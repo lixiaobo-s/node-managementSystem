@@ -1,4 +1,5 @@
 const User = require("../model/User")
+const { v4: uuidv4 } = require('uuid');
 async function login(username, password) {
     //向数据库中查找数据
     const user = await User.findOne({
@@ -10,6 +11,11 @@ async function login(username, password) {
         return user;
     }
     return false;
+}
+//查询用户id是否存在，或者电话邮箱等
+async function quryuser(data) {
+    let res = await User.find(data);
+    return res;
 }
 async function userAll(currentPage, pageSize, userId, userName) {
     let obj = {};
@@ -27,6 +33,15 @@ async function userAll(currentPage, pageSize, userId, userName) {
     }
     return false;
 }
+//新增
+async function addUser(data) {
+    let obj = {
+        userId: uuidv4(),
+        ...data,
+    }
+    let res = await User.create(obj);
+    return res;
+}
 //更新
 async function updatedById(data) {
     const { username, userEmail, role, state, userId } = data;
@@ -41,9 +56,22 @@ async function updatedById(data) {
 async function deleteById(userid) {
     await User.deleteOne({ userId: userid })
 }
+//批量删除
+async function deleteUserMany(data) {
+    let res = await User.remove({
+        userId: {
+            $in: data
+        }
+    });
+    return res;
+}
+
 module.exports = {
     login,
     userAll,
     updatedById,
-    deleteById
+    deleteById,
+    deleteUserMany,
+    addUser,
+    quryuser
 }

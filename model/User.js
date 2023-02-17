@@ -3,7 +3,7 @@ const mongose = require("../config/db");
 //配置字段格式
 const UserSchema = mongose.Schema({
     userId: {
-        type: Number,
+        type: String,
         require: true,
         unique: true //唯一不可重复
     },
@@ -23,7 +23,7 @@ const UserSchema = mongose.Schema({
     job: String, // 岗位
     state: {
         type: Number,
-        default: 1,
+        default: 2,
     }, // 1: 在职 2: 离职 3: 试用期
     role: {
         type: Number,

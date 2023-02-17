@@ -56,7 +56,7 @@ app.use(
   jwtKoa({
     secret: 'zhangsan'
   }).unless({
-    path: [/^\/users\/login/]   //登录接口不需要验证
+    path: [/^\/users\/login/, /^\/users\/addUser/],  //登录接口不需要验证
   })
 )
 app.use(users.routes(), users.allowedMethods())
