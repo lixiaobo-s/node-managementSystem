@@ -10,10 +10,19 @@ const menus = mongose.Schema({
         require: true,
         unique: true //唯一不可重复
     },
+    path: {
+        type: String,
+        require: true,
+        unique: true //唯一不可重复
+    },
     name: {
         type: String,
         require: true,
         unique: true //唯一不可重复
+    },
+    //图标
+    icon: {
+        type: String,
     },
     children: Array,
 })

@@ -17,7 +17,8 @@ onerror(app)
 app.use(
   cors({
     origin: function (ctx) {
-      return 'http://127.0.0.1:5173'
+      return 'http://localhost:8089'
+      // return 'http://127.0.0.1:5173'
     },
 
     exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
@@ -59,6 +60,7 @@ app.use(
     path: [/^\/users\/login/, /^\/users\/addUser/],  //登录接口不需要验证
   })
 )
+//配置路由
 app.use(users.routes(), users.allowedMethods())
 app.use(menus.routes(), menus.allowedMethods())
 
